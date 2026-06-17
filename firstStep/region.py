@@ -84,7 +84,7 @@ if __name__ == "__main__":
         print("\n" + "-" * 50)
         
         # 1단계: 시(도) 입력
-        city_input = input("1. 시(도)를 입력해주세요. (종료: q) : ")
+        city_input = input("1. 시(도)를 입력해주세요. *경기도, 제주도의 경우 반드시 해당 도를 먼저 작성해주세요. (종료: q) : ")
         
         if city_input.strip().lower() in ["q", "종료", "exit"]:
             print("프로그램을 종료합니다.")
@@ -93,9 +93,15 @@ if __name__ == "__main__":
         if not city_input.strip():
             print("▶ ⚠️ 알림: 시(도)를 반드시 입력해야 합니다.")
             continue
+
+        # 1단계 입력 검증: 시(도) 외에 구(군)까지 같이 입력했는지 확인
+        city_clean = city_input.strip()
+        if " " in city_clean or (city_clean.endswith("구") and city_clean not in ["대구", "대구시", "대구광역시"]) or city_clean.endswith("군"):
+            print("▶ ⚠️ 알림: 양식에 맞지 않게 입력하셨습니다. 시(도)까지만 입력해주세요. *경기도 제주도의 경우 '도'까지만 입력하세요.")
+            continue
             
         # 2단계: 구(군) 입력 (제주도 등 섬 지역 입력 시 명령어 자동 변경)
-        if "제주" in city_input:
+        if "제주" in city_input or "경기" in city_input or "경기도" in city_input:
             prompt_msg = "2. 시(구/군)을 입력하세요.           : "
         else:
             prompt_msg = "2. 구(군)을 입력해주세요.           : "
